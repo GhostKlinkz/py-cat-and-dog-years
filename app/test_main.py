@@ -19,6 +19,39 @@ from app.main import get_human_age
 def test_get_human_age(
     cat_age: int,
     dog_age: int,
-    expected: list,
+    expected: list[int],
 ) -> None:
     assert get_human_age(cat_age, dog_age) == expected
+
+
+@pytest.mark.parametrize(
+    "cat_age, dog_age",
+    [
+        (-1, -1),
+        (-1, 10),
+        (10, -1),
+    ],
+)
+def test_get_human_age_negative_ages(
+    cat_age: int,
+    dog_age: int,
+) -> None:
+    with pytest.raises(ValueError):
+        get_human_age(cat_age, dog_age)
+
+
+@pytest.mark.parametrize(
+    "cat_age, dog_age",
+    [
+        ("15", 15),
+        (15, "15"),
+        (None, 15),
+        (15, None),
+    ],
+)
+def test_get_human_age_invalid_types(
+    cat_age: object,
+    dog_age: object,
+) -> None:
+    with pytest.raises(TypeError):
+        get_human_age(cat_age, dog_age)
